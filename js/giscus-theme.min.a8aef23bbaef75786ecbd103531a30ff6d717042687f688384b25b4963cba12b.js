@@ -1,1 +1,0 @@
-(()=>{const e=e=>e==="system"?"preferred_color_scheme":e;window.addEventListener("themechange",t=>{const n=document.querySelector("iframe.giscus-frame");if(!n)return;n.contentWindow.postMessage({giscus:{setConfig:{theme:e(t.detail)}}},"https://giscus.app")})})()
