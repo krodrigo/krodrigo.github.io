@@ -1,4 +1,4 @@
-<!doctype html><html lang=pt-br data-theme=system data-pagefind-bundle=/pagefind/><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=theme-color content="#0047ab" media="(prefers-color-scheme: light)"><meta name=theme-color content="#141414" media="(prefers-color-scheme: dark)"><title>Observabilidade com OpenTelemetry: traces, métricas e logs sem perder o contexto | Kleber Labs</title><script>(function(){try{var e=localStorage.getItem("theme-preference");(e==="light"||e==="dark")&&(document.documentElement.dataset.theme=e)}catch{}})()</script><meta name=description content="Um guia prático para instrumentar sistemas distribuídos com OpenTelemetry, correlacionar sinais e transformar telemetria em decisões operacionais."><link rel=canonical href=https://kleber.dev/posts/2026/observabilidade-com-opentelemetry/><link rel=icon href=/favicon.ico sizes=any><link rel=icon href=/icon.svg type=image/svg+xml><link rel=apple-touch-icon href=/apple-touch-icon.png><meta property="og:type" content="article"><meta property="og:locale" content="pt_BR"><meta property="og:site_name" content="Kleber Labs"><meta property="og:title" content="Observabilidade com OpenTelemetry: traces, métricas e logs sem perder o contexto | Kleber Labs"><meta property="og:description" content="Um guia prático para instrumentar sistemas distribuídos com OpenTelemetry, correlacionar sinais e transformar telemetria em decisões operacionais."><meta property="og:url" content="https://kleber.dev/posts/2026/observabilidade-com-opentelemetry/"><meta property="og:image" content="https://kleber.dev/posts/2026/observabilidade-com-opentelemetry/featured_hu_d6670f5ede86521a.webp"><meta name=twitter:card content="summary_large_image"><meta name=twitter:title content="Observabilidade com OpenTelemetry: traces, métricas e logs sem perder o contexto | Kleber Labs"><meta name=twitter:description content="Um guia prático para instrumentar sistemas distribuídos com OpenTelemetry, correlacionar sinais e transformar telemetria em decisões operacionais."><meta name=twitter:image content="https://kleber.dev/posts/2026/observabilidade-com-opentelemetry/featured_hu_d6670f5ede86521a.webp"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2026-08-28T10:00:00-03:00","datePublished":"2026-08-28T10:00:00-03:00","description":"Um guia prático para instrumentar sistemas distribuídos com OpenTelemetry, correlacionar sinais e transformar telemetria em decisões operacionais.","name":"Observabilidade com OpenTelemetry: traces, métricas e logs sem perder o contexto | Kleber Labs","url":"https://kleber.dev/posts/2026/observabilidade-com-opentelemetry/"}</script><link rel=preload href=/scss/main.min.7ab0b984f16048eb090402f4c86df91a74861f8b21b59dbe1bbd8540c3d0a015.css as=style><link rel=stylesheet href=/scss/main.min.7ab0b984f16048eb090402f4c86df91a74861f8b21b59dbe1bbd8540c3d0a015.css integrity="sha256-erC5hPFgSOsJBAL0yG35GnSGH4shtZ2+G72FQMPQoBU="><link rel=preload href=/js/theme-toggle.min.32caa6268de6cdc11ec1f9bbc4ad10d55e3f142303ca50bb2c3ace3c39b35bbe.js as=script><script src=/js/theme-toggle.min.32caa6268de6cdc11ec1f9bbc4ad10d55e3f142303ca50bb2c3ace3c39b35bbe.js integrity="sha256-MsqmJo3mzcEewfm7xK0Q1V4/FCMDylC7LDrOPDmzW74=" defer></script><script src=/js/nav-toggle.min.4f6bacbfe6fc38ecfaffcbed0eea2ed8519f6f2bc92df320129b5acf4d5cfff7.js integrity="sha256-T2usv+b8OOz6/8vtDuou2FGfbyvJLfMgEptaz01c//c=" defer></script><script src=/js/search.min.7b8720451fcc241f00c8da4a4e90344593a8628bacffe95ecfdd3030d083bbb8.js integrity="sha256-e4cgRR/MJB8AyNpKTpA0RZOoYous/+lez90wMNCDu7g=" defer></script><script src=/js/article-actions.min.74e38e20e34b5a04536274949d4571106e72b65b4d9b0859708b91037298415a.js integrity="sha256-dOOOIONLWgRTYnSUnUVxEG5ytltNmwhZcIuRA3KYQVo=" defer></script><script src=/js/post-toc.min.7f6b25b7f185e8073478654aff1d0793de0f2d9369cf50dc1038debcf4c3cfa5.js integrity="sha256-f2slt/GF6Ac0eGVK/x0Hk94PLZNpz1DcEDjevPTDz6U=" defer></script><link rel=preconnect href=https://giscus.app><link rel=dns-prefetch href=https://giscus.app><script src=/js/giscus-theme.min.d3c905b87b553ba4042fb70c253b73488e93a419da26bb4f99837dcb52a4f2a1.js integrity="sha256-08kFuHtVO6QEL7cMJTtzSI6TpBnaJrtPmYN9y1Kk8qE=" defer></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("consent","default",{analytics_storage:"denied",ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied"});try{var savedConsent=localStorage.getItem("consent-analytics");savedConsent==="granted"&&gtag("consent","update",{analytics_storage:"granted"})}catch{}</script><script async src="https://www.googletagmanager.com/gtag/js?id=G-B19Y5STDHR"></script><script>gtag("js",new Date),gtag("config","G-B19Y5STDHR",{anonymize_ip:!0})</script><script type=module>
+<!doctype html><html lang=pt-br data-theme=system data-pagefind-bundle=/pagefind/><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=theme-color content="#0047ab" media="(prefers-color-scheme: light)"><meta name=theme-color content="#141414" media="(prefers-color-scheme: dark)"><title>Observabilidade com OpenTelemetry: traces, métricas e logs sem perder o contexto | Kleber Labs</title><script>(function(){try{var e=localStorage.getItem("theme-preference");(e==="light"||e==="dark")&&(document.documentElement.dataset.theme=e)}catch{}})()</script><meta name=description content="Um guia prático para instrumentar sistemas distribuídos com OpenTelemetry, correlacionar sinais e transformar telemetria em decisões operacionais."><link rel=canonical href=https://kleber.dev/posts/2026/observabilidade-com-opentelemetry/><link rel=icon href=/favicon.ico sizes=any><link rel=icon href=/icon.svg type=image/svg+xml><link rel=apple-touch-icon href=/apple-touch-icon.png><meta property="og:type" content="article"><meta property="og:locale" content="pt_BR"><meta property="og:site_name" content="Kleber Labs"><meta property="og:title" content="Observabilidade com OpenTelemetry: traces, métricas e logs sem perder o contexto | Kleber Labs"><meta property="og:description" content="Um guia prático para instrumentar sistemas distribuídos com OpenTelemetry, correlacionar sinais e transformar telemetria em decisões operacionais."><meta property="og:url" content="https://kleber.dev/posts/2026/observabilidade-com-opentelemetry/"><meta property="og:image" content="https://kleber.dev/posts/2026/observabilidade-com-opentelemetry/featured_hu_d6670f5ede86521a.webp"><meta name=twitter:card content="summary_large_image"><meta name=twitter:title content="Observabilidade com OpenTelemetry: traces, métricas e logs sem perder o contexto | Kleber Labs"><meta name=twitter:description content="Um guia prático para instrumentar sistemas distribuídos com OpenTelemetry, correlacionar sinais e transformar telemetria em decisões operacionais."><meta name=twitter:image content="https://kleber.dev/posts/2026/observabilidade-com-opentelemetry/featured_hu_d6670f5ede86521a.webp"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2026-08-28T10:00:00-03:00","datePublished":"2026-08-28T10:00:00-03:00","description":"Um guia prático para instrumentar sistemas distribuídos com OpenTelemetry, correlacionar sinais e transformar telemetria em decisões operacionais.","name":"Observabilidade com OpenTelemetry: traces, métricas e logs sem perder o contexto | Kleber Labs","url":"https://kleber.dev/posts/2026/observabilidade-com-opentelemetry/"}</script><link rel=preload href=/scss/main.min.3e52cd3ee4fdf11e1c9ee7a0ec02005c3095b8236f07d766eda83c60f9ffcd03.css as=style><link rel=stylesheet href=/scss/main.min.3e52cd3ee4fdf11e1c9ee7a0ec02005c3095b8236f07d766eda83c60f9ffcd03.css integrity="sha256-PlLNPuT98R4cnueg7AIAXDCVuCNvB9dm7ag8YPn/zQM="><link rel=preload href=/js/theme-toggle.min.32caa6268de6cdc11ec1f9bbc4ad10d55e3f142303ca50bb2c3ace3c39b35bbe.js as=script><script src=/js/theme-toggle.min.32caa6268de6cdc11ec1f9bbc4ad10d55e3f142303ca50bb2c3ace3c39b35bbe.js integrity="sha256-MsqmJo3mzcEewfm7xK0Q1V4/FCMDylC7LDrOPDmzW74=" defer></script><script src=/js/nav-toggle.min.4f6bacbfe6fc38ecfaffcbed0eea2ed8519f6f2bc92df320129b5acf4d5cfff7.js integrity="sha256-T2usv+b8OOz6/8vtDuou2FGfbyvJLfMgEptaz01c//c=" defer></script><script src=/js/search.min.7b8720451fcc241f00c8da4a4e90344593a8628bacffe95ecfdd3030d083bbb8.js integrity="sha256-e4cgRR/MJB8AyNpKTpA0RZOoYous/+lez90wMNCDu7g=" defer></script><script src=/js/article-actions.min.74e38e20e34b5a04536274949d4571106e72b65b4d9b0859708b91037298415a.js integrity="sha256-dOOOIONLWgRTYnSUnUVxEG5ytltNmwhZcIuRA3KYQVo=" defer></script><script src=/js/post-toc.min.7f6b25b7f185e8073478654aff1d0793de0f2d9369cf50dc1038debcf4c3cfa5.js integrity="sha256-f2slt/GF6Ac0eGVK/x0Hk94PLZNpz1DcEDjevPTDz6U=" defer></script><link rel=preconnect href=https://giscus.app><link rel=dns-prefetch href=https://giscus.app><script src=/js/giscus-theme.min.d3c905b87b553ba4042fb70c253b73488e93a419da26bb4f99837dcb52a4f2a1.js integrity="sha256-08kFuHtVO6QEL7cMJTtzSI6TpBnaJrtPmYN9y1Kk8qE=" defer></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("consent","default",{analytics_storage:"denied",ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied"});try{var savedConsent=localStorage.getItem("consent-analytics");savedConsent==="granted"&&gtag("consent","update",{analytics_storage:"granted"})}catch{}</script><script async src="https://www.googletagmanager.com/gtag/js?id=G-B19Y5STDHR"></script><script>gtag("js",new Date),gtag("config","G-B19Y5STDHR",{anonymize_ip:!0})</script><script type=module>
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs';
 
   const diagrams = [...document.querySelectorAll('.mermaid')];
@@ -44,6 +44,12 @@
       return Math.max(0.1, Math.min(1, width / baseWidth, height / baseHeight));
     };
 
+    const fitHeightScale = () => {
+      const style = window.getComputedStyle(viewport);
+      const height = viewport.clientHeight - Number.parseFloat(style.paddingTop) - Number.parseFloat(style.paddingBottom) - 16;
+      return Math.max(0.1, Math.min(1, height / baseHeight));
+    };
+
     const setScale = (next) => {
       scale = Math.min(4, Math.max(0.1, next));
       const svg = viewport.querySelector('svg');
@@ -57,10 +63,8 @@
       if (!source) return;
       const caption = figure.querySelector('figcaption')?.textContent.trim() || 'Diagrama Mermaid';
       const svg = source.cloneNode(true);
-      const viewBox = svg.viewBox.baseVal;
-      baseWidth = viewBox.width || Number.parseFloat(svg.getAttribute('width')) || source.getBoundingClientRect().width;
-      baseHeight = viewBox.height || Number.parseFloat(svg.getAttribute('height')) || source.getBoundingClientRect().height;
-      if (!baseWidth || !baseHeight) return;
+      baseWidth = 0;
+      baseHeight = 0;
       svg.removeAttribute('width');
       svg.removeAttribute('height');
       svg.style.maxWidth = 'none';
@@ -68,8 +72,27 @@
       viewport.replaceChildren(svg);
       title.textContent = caption;
       dialog.showModal();
+      const viewBox = svg.viewBox.baseVal;
+      const originalWidth = viewBox.width || Number.parseFloat(source.getAttribute('width')) || source.getBoundingClientRect().width;
+      const originalHeight = viewBox.height || Number.parseFloat(source.getAttribute('height')) || source.getBoundingClientRect().height;
+      const graph = svg.querySelector('g.root') || svg.querySelector('g');
+      try {
+        const bounds = graph?.getBBox();
+        if (bounds && bounds.width > 0 && bounds.height > 0) {
+          const padding = Math.max(8, Math.min(24, Math.min(bounds.width, bounds.height) * 0.08));
+          svg.setAttribute('viewBox', `${bounds.x - padding} ${bounds.y - padding} ${bounds.width + padding * 2} ${bounds.height + padding * 2}`);
+          baseWidth = bounds.width + padding * 2;
+          baseHeight = bounds.height + padding * 2;
+        }
+      } catch (error) {}
+      if (!baseWidth) baseWidth = originalWidth;
+      if (!baseHeight) baseHeight = originalHeight;
+      if (!baseWidth || !baseHeight) {
+        dialog.close();
+        return;
+      }
       requestAnimationFrame(() => {
-        scale = fitScale();
+        scale = window.matchMedia('(max-width: 45rem)').matches ? fitHeightScale() : fitScale();
         setScale(scale);
         viewport.scrollTo({ top: 0, left: 0 });
       });
@@ -96,7 +119,7 @@
         if (pointers.size === 2) {
           const [a, b] = [...pointers.values()];
           pinchDistance = Math.hypot(a.x - b.x, a.y - b.y);
-        } else if (scale > 1) {
+        } else if (viewport.scrollWidth > viewport.clientWidth || viewport.scrollHeight > viewport.clientHeight) {
           startScroll = { x: event.clientX, y: event.clientY, left: viewport.scrollLeft, top: viewport.scrollTop };
         }
       }
